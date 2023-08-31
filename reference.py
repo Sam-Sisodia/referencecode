@@ -1,4 +1,2295 @@
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Request  urls
+
+def your_view(request):
+referrer_url = request.META.get('HTTP_REFERER', None)
+r request_url = request.build_absolute_uri()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def get(self, request):
+dummy_content_type, _ = ContentType.objects.get_or_create(
+app_label='custom_permissions', # Use your app label
+model='dummycontenttype', # Use a unique model name
+)
+view_accounting_permission, _ = Permission.objects.get_or_create(
+codename='view_accounting',
+name='Can View Accounting',
+content_type=dummy_content_type,
+)
+permission = Permission.objects.get(codename='view_accounting')
+context = {
+"message": "Done"
+}
+return Response(permission)
+
+
+
+
+class Accountingpermission(viewsets.ReadOnlyModelViewSet):
+serializer_class = AccountingPermissionSerializer
+def get_queryset(self):
+permission = Permission.objects.get(codename='view_accounting')
+serializer = AccountingPermissionSerializer(permission)
+return Response(serializer.data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from rest_framework.permissions import BasePermission
+
+
+class UserPermissionlistAPI(viewsets.ReadOnlyModelViewSet):
+http_method_names = ["get"]
+serializer_class = UserPermissionlistserializer
+queryset = Permission.objects.all()
+
+
+def list(self, request, *args, **kwargs):
+queryset = self.filter_queryset(self.get_queryset())
+serializer = UserPermissionlistserializer(queryset, many=True)
+data = serializer.data
+
+
+user_permissions = set(request.user.get_all_permissions())
+
+
+grouped_data = [] # Initialize an empty list to store grouped data
+
+
+for item in data:
+model_name = item['model_name']
+# Check if the model_name is already present in the grouped_data list
+model_entry = next((entry for entry in grouped_data if entry['model_name'] == model_name), None)
+
+
+if model_entry is None:
+# If the model_name is not present, add it along with the permission details
+grouped_data.append({
+'model_name': model_name,
+'model_permission': [{
+'id': item['id'],
+'name': item['name'],
+'has_permission': self.check_permission(user_permissions, item)
+}]
+})
+else:
+# If the model_name is already present, append the permission details to the existing entry
+model_entry['model_permission'].append({
+'id': item['id'],
+'name': item['name'],
+'has_permission': self.check_permission(user_permissions, item)
+})
+
+
+# Return the list of dictionaries in the response
+return Response(grouped_data)
+
+
+def check_permission(self, user_permissions, permission_data):
+# Check if the user has the specific permission
+return f"{permission_data['content_type']}.{permission_data['codename']}" in user_permissions
+
+
+
+
+'has_permission': self.check_permission(user_permissions, item)
+
+{% for course in courses|slice:":5" %}
+<li class="f-list"><a href="#courses" class="a_tag">{{ course.name }}</a></li>
+{% endfor %}
+
+
+
+<li><a href="{{page.get_parent.url}}?category={{ cat.name }}"><span class="blog-tag">{{ cat.name }}</span></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Base 64
+
+
+
+import base64
+import json
+
+
+# Given payload
+payload = {
+"org_id": 11,
+"startdate": "1111",
+"enddate": 2222,
+"phonenumber": "987923342442479",
+}
+
+
+# Convert the payload to a JSON string
+payload_json = json.dumps(payload)
+
+
+# Encode the payload using Base64
+encoded_payload = base64.b64encode(payload_json.encode())
+
+
+# Your generated token
+token = encoded_payload
+
+
+print("Generated Token:", token)
+
+
+key = "98098080"
+if key== "98098084340":
+decoded_payload = base64.b64decode(token)
+
+
+# Parse the JSON payload
+payload = json.loads(decoded_payload)
+# Extract the phone number from the payload
+phone_number = payload["phonenumber"]
+
+
+print("Phone Number-------------------------------------------------------------:", phone_number)
+else:
+print("----------------------invlid key",)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Response modify
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="col-12 ">
+<div clas="heading">
+<h3 class="text-dark"><i>Response :</i> </h3>
+</div>
+
+
+<table class="table">
+<thead>
+<tr>
+<th scope="col">Question</th>
+<th scope="col">Answer</th>
+</tr>
+</thead>
+{% if summary %}
+<tbody>
+<tr>
+<td>
+<div>
+<p>Summary: {{ response.summary_type}}</p>
+<p>Instructions: {{ response.summary_instruction }}</p>
+</div>
+</td>
+<td> {% if response.summary %} {{ response.summary }} {% else %} N/A {% endif %}</td>
+</tr>
+</tbody>
+{% endif %}
+{% if question %}
+<tbody>
+<tr>
+<td>
+<div>
+<p>Question: {{ response.question}}</p>
+<p>Quesion_instruction: {{response.quesion_instruction}}</p>
+<p>Question_keyword: {{response.question_keyword}}</p>
+</div>
+</td>
+<td> {% if response.answer %} {{ response.answer }} {% else %} N/A {% endif %}</td>
+</tr>
+</tbody>
+{% endif %}
+{% if theme %}
+<tbody>
+<tr>
+<td>
+<div>
+<p>Theme_type: {{ result.theme_type}}</p>
+<p>Instruction: {{result.instruction}}</p>
+</div>
+</td>
+<td> {% if response %} {{ response|safe }} {% else %} N/A {% endif %}</td>
+</tr>
+</tbody>
+{% endif %}
+{% if frequency %}
+<tbody>
+<tr>
+<td>
+<div>
+<p>Instruction: {{ response.instruction}}</p>
+</div>
+</td>
+<td> {% if response.frequency %} {{ response.frequency }} {% else %} N/A {% endif %}</td>
+</tr>
+</tbody>
+{% endif %}
+{% if compareviewpoint %}
+<tbody>
+<tr>
+<td>
+<div>
+<p>Question: {{ response.question}}</p>
+<p>Instruction: {{ response.instruction}}</p>
+<p>keywords: {{ response.keywords}}</p>
+
+
+</div>
+</td>
+<td> {% if response.compare_viewpoint %} {{ response.compare_viewpoint }} {% else %} N/A {% endif %}</td>
+</tr>
+</tbody>
+{% endif %}
+{% if excel_column_themantic %}
+<tbody>
+<tr>
+<td>
+<div>
+<p>Question: {{ response.question}}</p>
+<p>Instruction: {{ response.theme_type}}</p>
+<p>keywords: {{ response.theme_instruction}}</p>
+</div>
+</td>
+<td> {% if response.answer %} {{ response.answer }} {% else %} N/A {% endif %}</td>
+</tr>
+</tbody>
+
+
+{% endif %}
+{% if categorize_text_excel %}
+<tbody>
+<tr>
+<td>
+<div>
+<p>Question: {{ response.question}}</p>
+<p>Instruction: {{ response.categorize_instructions}}</p>
+</div>
+</td>
+<td> {% if response.answer %} {{ response.answer }} {% else %} N/A {% endif %}</td>
+</tr>
+</tbody>
+{% endif %}
+</table>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def post(self, request):
+choice = request.session.get("choice")
+if not choice:
+errormessage="Select at least one option."
+return render(request,'choiceerror.html',{'errormessage':errormessage})
+# if choice:
+# del request.session["choice"]
+if request.user.is_authenticated:
+uploaded_file = request.FILES.getlist("file")
+if "upload_option" in request.session:
+upload_option = request.session["upload_option"]
+# del request.session["upload_option"]
+else:
+upload_option='new'
+if upload_option == "previous":
+files = request.POST.getlist("files")
+uploaded_file = Files.objects.filter(id__in=files)
+uploaded_file = [file.file for file in uploaded_file]
+else:
+uploaded_file = request.FILES.getlist("demo_file")
+
+
+if not isinstance(uploaded_file, list):
+uploaded_file = [uploaded_file]
+instance = FileHandler(uploaded_file)
+access=self.request.user.is_authenticated
+if access:
+df = instance.upload_documents(max_documents=50, max_words=100000)
+if not access:
+df = instance.upload_documents(max_documents=3, max_words=15000)
+
+
+if choice == Anaylsis.Summarize.value:
+forms = SummerizeType(request.POST)
+if forms.is_valid():
+summary_type = forms.cleaned_data["summary"]
+summary_instruction = forms.cleaned_data["instruction"]
+indiviual_summary = forms.cleaned_data["individual_summary"]
+instance = SumarrizeClass(
+is_demo=False,
+summary_type=summary_type,
+summary_instructions=summary_instruction,
+individual_summaries=indiviual_summary,
+)
+print("summary_type",summary_type)
+
+
+response,error = instance.call_summarize(df)
+if summary_type == "Bullet points":
+html_text = markdown.markdown(response, extensions=['extra'])
+data = html_text
+print("data (Essay):", data)
+else:
+sections = response.split('\n\n')
+formatted_dict = {}
+for section in sections:
+section_parts = section.split(':', 1)
+key = section_parts[0].strip()
+value = section_parts[1].strip() if len(section_parts) > 1 else ""
+formatted_dict[key] = value
+data = formatted_dict
+print("data (Formatted Dict):", data)
+# if summary_type == "Essay":
+# html_text = markdown.markdown(response, extensions=['extra'])
+
+
+# sections = response.split('\n\n')
+# formatted_dict = {}
+
+
+# for section in sections:
+# section_parts = section.split(':', 1)
+# key = section_parts[0].strip()
+# value = section_parts[1].strip() if len(section_parts) > 1 else ""
+# formatted_dict[key] = value
+
+
+
+
+if error:
+return render(request, "response.html", {"response": response,'error':error})
+if request.user.is_authenticated:
+UserQuery.objects.create(
+user=self.request.user,
+question={
+"Summary_type": summary_type,
+"Summary_instruction": summary_instruction,
+},
+answer=response,
+)
+return render(
+request, "response.html", {"response": response}
+)
+else:
+UserQuery.objects.create(
+question={
+"Summary_type": summary_type,
+"Summary_instruction": summary_instruction,
+},
+answer=response,
+)
+context = {
+"summary_type": summary_type,
+"summary_instruction": summary_instruction,
+"summary": response,
+}
+# return JsonResponse({"response":context,'summary':True})
+return render(
+request,"techdemo.html", {"response": data, "summary": True}
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Not found page
+
+
+
+CSV READ
+
+
+Csv read
+
+
+import csv
+from django.core.management.base import BaseCommand
+from apps.users.models import UserQuery
+from apps.users.models import User
+
+
+class Command(BaseCommand):
+help = "Add email to user from a CSV file"
+
+
+def handle(self, *args, **options):
+csv_file_path = "apps/users/management/commands/AILYZE_user_past_questions_and_answers.csv" # Update the path to your CSV file
+
+
+# Open the CSV file
+with open(csv_file_path, 'r') as file:
+csv_reader = csv.reader(file)
+header_row = next(csv_reader)
+for row in csv_reader:
+question = row[1]
+answer = row[2]
+email = row[3]
+user = User.objects.filter(email=email).first()
+# # Create a new UserQuery object and save it to the database
+user_query,created = UserQuery.objects.get_or_create(question=question, answer=answer,user=user.id)
+print(f"New UserQuery created:")
+
+
+
+
+
+
+
+
+
+
+class SalesOrderAPI(APIView):
+def get(seif,request,id=None,format=None):
+org = request.headers.get("organization")
+try:
+if settings.DEBUG:
+data = {
+"count": "0",
+"results": []
+}
+return Response(data, status=status.HTTP_200_OK)
+if id is not None:
+data = seterasosdetails(id)
+count = len(data)
+data_obj = {
+"count": count,
+"results": [{data}]
+}
+return Response(data_obj, status=status.HTTP_200_OK)
+else:
+salesorders = seteraSOS(org)
+count = len(salesorders)
+data = {
+"count": count,
+"results": [{salesorders}]
+}
+return Response(data, status=status.HTTP_200_OK)
+except Exception as e:
+return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+Send static url false
+
+
+DEBUG = False
+
+
+
+
+from django.views.static import serve
+
+
+ re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+   re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+]
+
+
+
+
+STATIC_URL = '/static/'
+# # STATICFILES_DIRS = [
+# #     BASE_DIR /  "static",
+# #     # BASE_DIR / "accounts" / "static"
+# # ]
+STATIC_ROOT = BASE_DIR / 'static'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dict Compare
+
+class ProcessQuery(View):
+   a = {
+       Anaylsis.Summarize.value: lambda request: render(request,'chioceform.html',{'forms':SummerizeType()}),
+       Anaylsis.Ask_a_specific_question.value:  lambda request:render(request,'chioceform.html',{'forms':SPecificQuestion()}),
+       Anaylsis.Conduct_thematic_analysis.value: lambda request: render(request,'chioceform.html',{'forms':ThemeType()}),
+       Anaylsis.Identidy_which_document_contain_a_certain_viewpoint.value:  lambda request: render(request,'chioceform.html',{'forms':IdentifyViewpoint()}),
+       Anaylsis.Compare_viewpoints_across_documents.value:  lambda request: render(request,'chioceform.html',{'forms':CompareViewpoint()})
+   }
+
+
+   def post(self,request):
+       choice=request.session.get('choice')
+       variables = {
+       "Summarize": ["summary", "instruction"],
+       "Ask_a_specific_question": ["question", "instruction", "keywords"],
+       "Conduct_thematic_analysis": ["theme_type", "instruction"],
+       "Identidy_which_document_contain_a_certain_viewpoint": ["instruction"],
+       "Compare_viewpoints_across_documents": ["instruction", "question"]
+   }
+
+
+       if choice in variables:
+           print("-------------------------------------", choice)
+           values = [request.POST.get(var, '') for var in variables[choice]]
+           print("This is ins=", *values)
+
+
+      
+
+
+
+
+       render_fun=self.a.get(choice)
+       return HttpResponse("Done ")
+  
+
+
+
+
+
+
+
+
+
+
+Data enter without form 
+
+
+
+
+def my_view(request):
+   if request.method == 'POST':
+       # Process the POST data
+       data = request.POST.get('input_data')
+       # Perform some operations with the data
+       result = data.upper()
+       return HttpResponse(result)
+   else:
+       # Handle GET requests
+       return HttpResponse("This is a GET request.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ #  run in shell 
+from django.test import RequestFactory
+factory = RequestFactory()
+
+
+request = factory.post('/my-view-url/', {'input_data': 'example data'})
+# request = factory.post('/my-view-url/', {'input_data': 'John\nDoe\njohn@example.com\n123 Main St\npassword123'})
+
+
+request = factory.post('/my-view-url/', {'input_data': 'first_name:John\nlast_name:Doe\nemail:john@example.com\naddress:123 Main St\npassword:password123'})
+
+
+
+
+
+
+response = my_view(request)
+print(response.content)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Foreign key some values
+
+
+
+class SubscriptionResponseSerializer(serializers.ModelSerializer):
+   organization = OrgSerializer()
+   sim = SIMSeriliazer()
+   carrier = CarrierSerializer()
+   mobile_product = MobileproductSerializer()
+   barring_voice = BarringVoiceSerializer()
+   barring_mms = BarringMMSSerializer()
+   barring_sms = BarringSMSSerializer()
+   barring_roaming = BarringRoamingSerializer()
+   barring_data = BarringDataSerializer()
+   barring_roamingdata = BarringRoamingDataSerializer()
+
+
+   class Meta:
+       model = Subscription
+       fields = list_display = (
+           "id",
+           "organization",
+           "number"
+       )
+
+
+       read_only_fields = ("temp_close",)
+
+
+
+
+   def get_organization(self, obj):
+       return {
+       "id": obj.organization.id,
+       "name": obj.organization.name,
+   }
+
+
+   def to_representation(self, instance):
+       representation = super().to_representation(instance)
+       representation['organization'] = self.get_organization(instance)
+       return representation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code creaTE
+try:
+
+
+
+
+           dataProduct = {
+               "dataCode": obj.mobile_product.datacode,
+               "threeGDown": obj.mobile_product.dataspeed3GUp.name,
+               "threeGUp": obj.mobile_product.dataspeed3GUp.name,
+               "fourGDown": obj.mobile_product.dataspeed4GDown.name,
+               "fourGUp": obj.mobile_product.dataspeed4GUp.name,
+               "priority": obj.mobile_product.priority,
+           }
+           subscription_payload = {
+               "subscription": obj.number,
+               "dataProduct": dataProduct,
+               "dataRoamingLimit": "",
+               "barrings": "",
+               "imsi": obj.sim.imsi,
+               "iccID": obj.sim.icc,
+               "voicemail": obj.voicemail_number,
+           }
+           subscriptionId = serviceId.objects.filter(subscription=obj.id).first()
+
+
+           # tempopen payload
+
+
+           tempopen_payload = {
+               "subscription": obj.number,
+               # "subscriptionId": subscriptionId.subscriptionId,
+               # "serviceId": subscriptionId.serviceId,
+           }
+           print("----", tempopen_payload)
+
+
+           # datapackege paylaod
+           datapackage_payload = {
+               "subscription": obj.number,
+               # "subscriptionId" :subscriptionId.subscriptionId,
+               "dataProduct": dataProduct,
+           }
+           # data_roaming_payload
+
+
+           data_roaming_payload = {
+               "subscription": obj.number,
+               # "subscriptionId" :subscriptionId.subscriptionId,
+               "dataRoamingLimit": obj.barring_data.operator_code,
+           }
+
+
+       except Exception as e:
+           print(e)
+
+
+
+
+
+
+
+     Permission 
+
+
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+
+
+
+
+class WriteByAdminOnlyPermission(BasePermission):
+   def has_permission(self, request, view):
+       user = request.user
+       if request.method in SAFE_METHODS:
+           return True
+       if request.method in ("POST", "DELETE", "PUT", "PATCH") and (
+           user.is_superuser or user.is_staff
+       ):
+           return True
+
+
+       return False
+
+
+
+
+class ReadByAdminOnlyPermission(BasePermission):
+   def has_permission(self, request, view):
+       user = request.user
+       if request.method in ("POST", "GET", "DELETE", "PUT", "PATCH") and (
+           user.is_superuser or user.is_staff
+       ):
+           return True
+       return False
+
+
+
+
+class IsCustomAdminUser(BasePermission):
+   """
+   Allows access only to admin users.
+   """
+
+
+   def has_permission(self, request, view):
+       return bool(request.user and request.user.user_type.lower() == "admin")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Base64 dummy
+
+
+
+
+
+Video compress 
+
+
+
+
+
+@receiver(pre_save, sender=PostItem)
+def compress_media(sender, instance, **kwargs):
+       data = instance.data
+       # data = getattr(instance, 'data')
+       def filetype(data):
+           if data.name.lower().endswith(('.jpg', '.jpeg', '.png', '.gif')):
+               return True
+           if data.name.lower().endswith(('.mp4', '.mov', '.avi', '.wmv')):
+               return False
+       status = filetype(data)
+       image_field = data
+       video_field = data
+      # Compress image
+       if image_field and status == True:
+           im = Image.open(image_field)
+           if im.mode == 'RGBA':
+               im = im.convert('RGB')
+           im_io = BytesIO()
+           im.save(im_io, 'JPEG', quality=60)    
+           compressed_image = File(im_io, name=image_field.file.name)
+           image_field.file = compressed_image
+
+
+       # Compress video
+       #         # Compress video
+       if video_field and status==False:
+           input_data = video_field.file.read()
+           with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+               temp_file.write(input_data)
+               temp_file_path = temp_file.name
+           # Compress video using MoviePy
+           video = VideoFileClip(temp_file_path)
+           compressed_video = video.resize((640, 360))
+           compressed_video_file = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
+           compressed_video.write_videofile(compressed_video_file.name, codec='libx264', audio_codec='aac')
+           # Save compressed video to media folder
+           with open(compressed_video_file.name, 'rb') as f:
+               compressed_video_file = File(f)
+               compressed_video_path = os.path.join('', compressed_video_file.name.split('/')[-1])
+               default_storage.save(compressed_video_path, compressed_video_file)
+           instance.data = compressed_video_path
+
+
+           os.unlink(temp_file_path)
+           os.unlink(compressed_video_file.name)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+# @receiver(pre_save, sender=Post)
+# def compress_media(sender, instance, **kwargs):
+#     # Check if the instance is an image or video model
+#     if getattr(instance, 'image') or getattr(instance, 'video'):
+#         image_field = getattr(instance, 'image')
+#         video_field = getattr(instance, 'video')
+
+
+#         # Compress image
+#         if image_field:
+#             im = Image.open(image_field)
+#             if im.mode == 'RGBA':
+#                 im = im.convert('RGB')
+#             im_io = BytesIO()
+#             im.save(im_io, 'JPEG', quality=60)    
+#             compressed_image = File(im_io, name=image_field.file.name)
+#             image_field.file = compressed_image
+
+
+#         # Compress video
+#         if video_field:
+#             input_data = video_field.file.read()
+#             with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+#                 temp_file.write(input_data)
+#                 temp_file_path = temp_file.name
+#             # Compress video using MoviePy
+#             video = VideoFileClip(temp_file_path)
+#             compressed_video = video.resize((640, 360))
+#             compressed_video_file = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
+#             compressed_video.write_videofile(compressed_video_file.name, codec='libx264', audio_codec='aac')
+#             # Save compressed video to media folder
+#             with open(compressed_video_file.name, 'rb') as f:
+#                 compressed_video_file = File(f)
+#                 compressed_video_path = os.path.join('video', compressed_video_file.name.split('/')[-1])
+#                 default_storage.save(compressed_video_path, compressed_video_file)
+#             instance.video.name = compressed_video_path
+
+
+#             os.unlink(temp_file_path)
+#             os.unlink(compressed_video_file.name)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if video_field:
+           input_data = video_field.file.read()
+           with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+               temp_file.write(input_data)
+               temp_file_path = temp_file.name
+           # Compress video using MoviePy
+           video = VideoFileClip(temp_file_path)
+           compressed_video = video.resize((640, 360))
+           compressed_video_file = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
+           compressed_video.write_videofile(compressed_video_file.name, codec='libx264', audio_codec='aac')
+           # Save compressed video to media folder
+           with open(compressed_video_file.name, 'rb') as f:
+               compressed_video_file = File(f)
+               compressed_video_path = os.path.join('RoboKidz/thumbs/', compressed_video_file.name.split('/')[-1])
+               default_storage.save(compressed_video_path, compressed_video_file)
+       # Update instance video field with compressed video path
+           instance.video.name = compressed_video_path
+           # Delete temporary files
+           os.unlink(temp_file_path)
+           os.unlink(compressed_video_file.name)
+           # input_data = video_field.file.read()
+           # with tempfile.NamedTemporaryFile(delete=False) as f:
+           #     f.write(input_data)
+           #     f.seek(0)
+           #     file_path = f.name
+           #     print("===========================",file_path)
+           #     input_file = file_path
+           #     output_file = 'compressed_video.mp4'
+           #     target_bitrate = '1000k'
+           #     video = VideoFileClip(input_file)
+           #     compressed_video = video.resize(width=640)
+           #     # Set the target bitrate
+              
+           #     compressed_video.write_videofile(output_file, bitrate=target_bitrate)
+          
+
+
+
+
+#             print("----------------",video_field.path)
+# # Set the input and output file names
+#             input_file = video_field
+#             output_file = 'compressed_video.mp4'
+#             target_bitrate = '1000k'
+#             clip = VideoFileClip(input_file)
+#             clip_resized = clip.resize(width=640)
+#             # Set the target bitrate
+#             clip_resized.write_videofile(output_file, bitrate=target_bitrate)
+
+
+
+
+       #     input_data = video_field.file.read()
+       #     with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+       #         temp_file.write(input_data)
+       #         temp_file_path = temp_file.name
+              
+       #     # # Compress video using MoviePy
+       #     video = VideoFileClip(temp_file_path)
+       #     compressed_video = video.resize((640, 360))
+       #     compressed_video.write_videofile(video_field.file.name)
+       #     with open(video_field.file.name, 'rb') as f:
+       #         f.seek(0)
+       #         compressed_video = File(f)
+             
+       #     video_field.file = compressed_video
+       # os.unlink(video_field.file.name)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Django reference code
+
+python manage.py dumpdata auth.group --indent 2 > apps/group.json
+
+
+Create default data first time with  migrate
+
+
+
+
+
+sigal.py
+from django.db.models.signals import post_migrate
+from django.dispatch import receiver
+from app.models import School
+from django.contrib.auth.models import Group
+
+
+@receiver(post_migrate)
+def create_default_data(sender, **kwargs):
+   if sender.name == 'app':
+       l = ["superuser","admin","customer","seller"]
+       for i in l:
+           Group.objects.get_or_create(name= i)
+
+
+
+App.py 
+from django.apps import AppConfig
+
+
+
+
+class AppConfig(AppConfig):
+   default_auto_field = "django.db.models.BigAutoField"
+   name = "app"
+   def ready(self):
+       from app import signal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class ListManagementAPI(ModelViewSet):
+   serializer_class = ListManagementSerializer
+   queryset = ListManagement.objects.all()
+
+
+   def create(self, request,*args, **kwargs,):
+       f= request.data['name']
+       decoded_file = f.read().decode()
+       io_string = io.StringIO(decoded_file)
+       reader = csv.reader(io_string)
+       next(reader)
+       column_values = []
+       for row in reader:
+           column_values.append(row[0])  # Change index to match desired column
+       print(column_values)
+      
+       serializer = ListManagementSerializer(data=request.data)
+       if serializer.is_valid():
+           # try:
+               f = serializer.validated_data["name"]
+               # decoded_file = f.read().decode()
+               # io_string = io.StringIO(decoded_file)
+               # reader = csv.reader(io_string)
+               # next(reader)
+          
+               # for row in reader:
+               #   print(str(row))
+           # except Exception as e:
+           #     print(e)
+         
+           # self.perform_create(serializer)
+           # return Response(serializer.data, status=201)
+       return Response(serializer.errors, status=400)
+  
+
+
+
+
+
+
+   def perform_create(self, serializer):
+       serializer.save(created_by=self.request.user, updated_by=self.request.user)       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import pytz
+TIMEZONE_CHOICES = []
+for tz in pytz.all_timezones:
+   TIMEZONE_CHOICES.append((tz, tz))
+TIMEZONE_CHOICES = tuple(TIMEZONE_CHOICES)
+
+
+from django.contrib.auth.models import Group
+
+
+# get_or_create return error due to
+new_group = Group.objects.get_or_create(name = 'groupName')
+print(type(new_group))       # return tuple
+
+
+
+
+
+operation_summary="Sign Up API"
+
+
+
+
+
+
+
+
+IP ADDRESS (localhost)
+
+
+
+
+def loginhistory(sender,instance, **kwargs):
+   ## importing socket module
+import socket
+## getting the hostname by socket.gethostname() method
+hostname = socket.gethostname()
+## getting the IP address using socket.gethostbyname() method
+ip_address = socket.gethostbyname(hostname)
+## printing the hostname and ip_address
+print(f"Hostname: {hostname}")
+print(f"IP Address: {ip_address}")
+   d = str(urlopen('http://checkip.dyndns.com/').read())
+   l = r.compile(r'Address: (\d+\.\d+\.\d+\.\d+)').search(d).group(1)
+   print("This is ip",l)
+  
+  print("--------------------",socket.gethostbyname(socket.gethostname()))
+
+
+
+
+ def get_client_ip(self,request):
+       x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+       if x_forwarded_for:
+           ip = x_forwarded_for.split(',')[0]
+       else:
+           ip = request.META.get('REMOTE_ADDR')
+
+
+       print("This is ip---",ip)
+
+
+
+
+Custom JWT
+
+
+class LoginAPI(APIView):
+   @swagger_auto_schema(request_body=LoginSerializer)
+   def post(self, request):
+       email = request.data.get('email')
+       password = request.data.get('password')
+       # user = User.objects.filter(email=email,).first()
+       user=authenticate(request=request,email=email,password=password)
+
+
+       if user:
+           user = LoginDetailsSerializer(user)
+           auth_token = jwt.encode({'email': user.data.get('email'), 'userid': user.data.get('userid'),
+                                    'exp': datetime.datetime.timestamp(
+                                        (datetime.datetime.now() + datetime.timedelta(days=1, hours=3)))},
+                                   settings.SECRET_KEY, 'HS256')
+           data = {
+               'user': user.data, 'token': auth_token
+           }
+           return Response({'data': data, 'issuccess': True}, status=status.HTTP_200_OK)
+       return Response({"message": "Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+USER TYPE
+
+user_type = serializers.ChoiceField(choices=UserType.choices())
+
+
+
+
+def create(self, validated_data):
+       validated_data["mobile_verified"] = False
+       print("---------------------------------------",UserType.B2B.value)
+       validated_data["user_type"] = UserType.B2B.value
+       classes = validated_data.pop("classes")
+       user = User.objects.create_user(**validated_data)
+       gen_pass = "".join((random.choice("abcdxyzpqr1234567890") for i in range(8)))
+       print(gen_pass)
+       user.password = gen_pass
+       # send_passwod(user.email, gen_pass)
+       user.set_password(user.password)
+       user.save()
+       self.create_user_video(user, classes)
+       return user
+
+
+
+foreign key method 
+
+
+
+
+class kitSerializer(serializers.ModelSerializer):
+   qr_code = serializers.CharField(source = 'qr code')
+   qr_cetegory = serializers.CharField(source = 'category')
+    class Meta:
+       model = Kit
+       fields = ("id", "qr_cetegory","qr_code" )
+       read_only_fields = ()
+
+
+   
+
+
+
+
+
+
+=================================
+
+
+ def to_representation(self, instance):
+       response = super().to_representation(instance)
+       response['category'] = CategorySerializer(instance.category,context={"request": self.context["request"]}).data
+       return response
+
+
+
+
+
+
+
+
+
+
+Pagination (remove)
+
+"DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+   "PAGE_SIZE": 10,
+
+
+
+
+
+
+
+
+
+
+class CategoryApiView(ModelViewSet):
+   permission_classes = [IsCustomAdminUser]
+   # pagination_class = None
+   queryset = Category.objects.all()
+   serializer_class = CategorySerializer
+   filterset_fields = ["name"]
+   search_fields = ["name"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+If else convert on Dictionary
+
+class OrgsForUserView(generics.ListAPIView):
+   permission_classes = [IsAuthenticated]
+   authentication_classes = [SessionAuthentication, JWTAuthentication]
+   serializer_class = OrgSerializer
+
+
+   def get_queryset(self):
+       user_org = self.request.user.organization
+       user_role = self.request.user.role.name
+       role_based_queryset = {
+           "Supervisor": Organization.objects.all(),
+           "Reseller": Organization.objects.filter(
+               Q(reseller=user_org) | Q(id=user_org.id)
+           ),
+           "ResellerAgent": Organization.objects.filter(agent=user_org),
+           "CustomerAdmin": Organization.objects.filter(id=user_org.id),
+       }
+       return role_based_queryset.get(user_role)
+
+
+
+
+
+
+
+
+
+
+Filters (install modules first)
+
+
+filterset_fields = ["name"]
+   search_fields = ["name"]
+
+
+
+REST_FRAMEWORK = {
+   "DEFAULT_AUTHENTICATION_CLASSES": [
+       "rest_framework_simplejwt.authentication.JWTAuthentication",
+       "rest_framework.authentication.SessionAuthentication",
+   ],
+   "DEFAULT_FILTER_BACKENDS": [
+       "django_filters.rest_framework.DjangoFilterBackend",
+       "rest_framework.filters.SearchFilter",
+       "rest_framework.filters.OrderingFilter",
+   ],
+   "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+   "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+   "PAGE_SIZE": 100,
+   "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+}
+
+
+
+
+
+Send user info in token
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+   @classmethod
+   def get_token(cls, user):
+       token = super().get_token(user)
+      
+       token["username"] = user.email
+       token["is_staff"] = user.is_staff
+       token["organization"] = user.organization.id
+       token["user_type"] = user.role.name
+     
+
+
+  
+      
+       return token
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+   serializer_class = MyTokenObtainPairSerializer
+
+
+
+
+
+
+
+
+
+LIST Input from serializer
+
+class PrintQRcodeSerilizer(serializers.Serializer):
+   qrcodes = serializers.ListField(child=serializers.IntegerField(min_value=0, max_value=100))
+   
+
+
+
+
+class printqrcodeapiview(ModelViewSet):
+   permission_classes = [WriteByAdminOnlyPermission, ReadByAdminOnlyPermission]
+   serializer_class = PrintQRcodeSerilizer
+   queryset = ""
+
+
+
+
+   def create(self, request, *args, **kwargs):
+       serializer = PrintQRcodeSerilizer(data= request.data)
+       if serializer.is_valid(raise_exception=True):
+           qty = serializer.validated_data["qrcodes"]
+           print("-----------------",type(qty))  
+           return "Done"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Request (some mata data) - HTTP REQUEST 
  Apache/nginx
 Wsgi (web server gateway interface -> how web server communicate  
@@ -642,6 +2933,51 @@ python3 manage.py loaddata apps/users/fixtures/role.json
 Format in vs code  –  shift +alt + F  ( window)
                       Shift + option+F    - mac
                        Shift + alt +I   - linux
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Load fix ture at migrate time 
+
+
+
+
+
+
+from django.conf import settings
+from django.core.management import call_command
+
+
+
+
+@receiver(post_migrate)
+def load_fixture_data(sender, **kwargs):
+   try:
+ 
+       if  not settings.FIXTURES_LOADED:
+           call_command('loaddata', 'apps/users/fixtures/group.json')
+           settings.FIXTURES_LOADED = True
+   except Exception as e:
+      
+       print(e)
+
+
+
+
+
+
 
 
 #django rest change password (install django restassword)
@@ -2393,7 +4729,7 @@ class  SubscriptionApiView(viewsets.ModelViewSet):
 
 
 
-Signals
+# Signals
 
 from django.shortcuts import render,HttpResponse
 from . models import *
@@ -2538,12 +4874,6 @@ class VerifyPasswordSerializer(serializers.Serializer):
        if password != confirm_password:
            raise ValidationError('Passwords and Confirm password not  matching')
        return value
-
-
-
-
-
-
 
 
 
